@@ -7,11 +7,29 @@
 {% block main %}
 <script src="/static/index.js"></script>
 
+
 <body>
+    <div class="row">
+        <div class="column">Start</div>
+        <div class="column" id="square" style="background-color: green;"></div>
+        <div class="column">Finish</div>
+        <div class="column" id="square" style="background-color: red;"></div>
+        <div class="column">Walls</div>
+        <div class="column" id="square" style="background-color: black;"></div>
+        <div class="column">Path</div>
+        <div class="column" id="square" style="background-color: yellow;"></div>
+        <div class="column">Explored</div>
+        <div class="column" id="square" style="background-color: orange;"></div>
+    
+    </div>
+    <div style="padding-bottom: 10px;"></div>
+    <div>
+        Cells Explored: 0
+    </div>
     <table>
         {% for i in range(25) %}
         <tr>
-            {% for j in range(25) %}
+            {% for j in range(50) %}
             <td id="{{i,j}}">
                 
             </td>

@@ -28,8 +28,8 @@ table {
 
 td {
     border: 1px solid black;
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     font-size: 30px;
     text-align: center;
 }
@@ -44,4 +44,21 @@ td>a {
 
 #start {
     background-color: green;
+}
+
+.column {
+    float: left;
+    width: 7%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#square {
+    height: 20px;
+    width: 20px;
 }

@@ -61,7 +61,7 @@ def search():
 
     # Solution
     solution = m.solution[1] if m.solution is not None else None
-    return jsonify({"order": m.order, "solution": solution[:-1]})
+    return jsonify({"order": m.order, "solution": solution[:-1], "states":m.num_explored})
 
 
 @app.route("/sell", methods=["GET", "POST"])

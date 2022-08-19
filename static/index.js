@@ -31,7 +31,6 @@ function draw_point() {
     if (!drawing)
         return;
 
-    console.log(walls)
     // Creates a tree of html structure over hovering area
     const cells = document.querySelectorAll(":hover");
     const cell = cells[cells.length - 1]
@@ -82,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function(){
             }
           
             // Creates visual effect when swarming towards target
+            
             function colorcells (cell){
                 temp = document.getElementById(`(${cell[0]}, ${cell[1]})`);
                 temp.style.backgroundColor = "yellow";
@@ -95,11 +95,8 @@ document.addEventListener('DOMContentLoaded', function(){
             // Drawing the final path to target
 
             function draw_path(){
-                console.log(current)
-                console.log(data["order"].length - 1)
 
                 if (current == (data["order"].length - 1)){
-                    console.log("Inside the draw path")
                     for (let i = 0; i < data["solution"].length; i++) {
                         let cell = data["solution"][i];
 
@@ -142,7 +139,6 @@ document.addEventListener('DOMContentLoaded', function (){
 
     start.addEventListener('mousedown', function () {
         drag = true
-        console.log(drag)
     });
 
     start.addEventListener('mouseup', function () {

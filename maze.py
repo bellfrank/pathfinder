@@ -50,7 +50,7 @@ class Maze():
 
         # Determine height and width of maze
         self.height = 25
-        self.width = 25
+        self.width = 50
 
         # Create the maze
         maze = [[0] * self.width for _ in range(self.height)]
