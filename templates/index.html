@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block main %}
+<script src="/static/index.js"></script>
+
+<body>
+    <table>
+        {% for i in range(25) %}
+        <tr>
+            {% for j in range(25) %}
+            <td id="{{i,j}}">
+                
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+
+    <button id="search_button" type="submit" class="btn btn-primary"> Search Path </button>
+
+</body>
+
+{% endblock %}
