@@ -9,23 +9,62 @@
 
 
 <body>
-    <div class="row">
-        <div class="column">Start</div>
-        <div class="column" id="square" style="background-color: green;"></div>
-        <div class="column">Finish</div>
-        <div class="column" id="square" style="background-color: red;"></div>
-        <div class="column">Walls</div>
-        <div class="column" id="square" style="background-color: black;"></div>
-        <div class="column">Path</div>
-        <div class="column" id="square" style="background-color: yellow;"></div>
-        <div class="column">Explored</div>
-        <div class="column" id="square" style="background-color: orange;"></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div id="square" style="background-color: green;" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Start</div>
+            </div>
+            
+            <div class="col">
+                <div id="square" style="background-color: red;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Finish</div>
+            </div>
+            <div class="col">
+                <div id="square" style="background-color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Walls</div>
+            </div>
+            <div class="col">
+                <div id="square" style="background-color: yellow;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path</div>
+            </div>
+            <div class="col">
+                <div id="square" style="background-color: orange;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Explored</div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <label>1. Choose an algorithm:</label>
+                <select>
+                    <option value="breadth">Breadth First Search</option>
+                    <option value="depth">Depth First Search</option>
+                    <option value="greedy">Greedy Breadth First Search</option>
+                    <option value="astar">A* Search</option>
+                    <!-- <option value="all">Run ALL Algorithms</option> -->
+                </select>
+                <div>2. Draw walls! Hold and drag mouse down.</div>
+                <div>3. Click Search to find the route!</div>
+                <div>4. Try Ludicrous Mode</div>
+
+            </div>
+            <div class="col">
+                <div><strong>Cells Explored</strong></div>
+                <h5><span id="state_count" style="color: green;" >0</span></h5>
+            </div>
+
+        </div>
+    </div>
     
-    </div>
-    <div style="padding-bottom: 10px;"></div>
-    <div>
-        Cells Explored: 0
-    </div>
+   
+    
+    
+    
+        
+
+
+    
+    <p></p>
     <table>
         {% for i in range(25) %}
         <tr>
@@ -39,8 +78,117 @@
     </table>
     <br>
 
-    <button id="search_button" type="submit" class="btn btn-primary"> Search Path </button>
+    <button id="search_button" type="submit" class="btn btn-primary"> Search Path </button>    
+    <button class="btn btn-danger" id="clear_button">Clear</button>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+    
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+    
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+    
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    </head>
+    
+    <body>
+        <p></p>
+        <h4>Feeling Ludicrous?</h4>
+    
+        <!-- Trigger/Open The Modal -->
+        <button id="myBtn" type="button" class="btn btn-outline-warning" style="padding-left: 20px;">Initiate Launch</button>
 
+    
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+    
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p><strong>Thy shalt not fear Ludicrous Mode</strong></p>
+                <div style="align-items: left;">
+                    <p>This mode will run the following algorithms:</p>
+                    <p>Greedy Breadth First Search, Breadth/Depth First Search, and A* Search</p>
+                    <p></p>
+                </div>
+                <button type="button" class="btn btn-danger">Click to Launch</button>
+                
+            </div>
+    
+        </div>
+    
+        <script>
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal 
+            btn.onclick = function () {
+                modal.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>
+    
 </body>
 
 {% endblock %}

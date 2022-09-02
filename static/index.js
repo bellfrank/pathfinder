@@ -56,10 +56,14 @@ function draw_point() {
 // Submit Button
 document.addEventListener('DOMContentLoaded', function(){
     document.querySelector('#search_button').onclick = function(){
+        // Also fetch the method wanted
+        algo = document.querySelector("select").value
+        if (algo == "all")
+            return
         // Send a GET request to the URL
         fetch('http://127.0.0.1:5000/search',{
             method:"POST",
-            body: JSON.stringify([...walls]),
+            body: JSON.stringify({"walls":[...walls],"algo":algo}),
             headers: {
                 "Content-Type": "application/json" 
             }   
@@ -81,14 +85,24 @@ document.addEventListener('DOMContentLoaded', function(){
             }
           
             // Creates visual effect when swarming towards target
+
+            const cell_count = document.querySelector('#state_count')
             
             function colorcells (cell){
                 temp = document.getElementById(`(${cell[0]}, ${cell[1]})`);
                 temp.style.backgroundColor = "yellow";
                 setTimeout(() => {
+                    // Change swarming cells to orange
                     temp = document.getElementById(`(${cell[0]}, ${cell[1]})`);
                     temp.style.backgroundColor = "orange";
                     current++;
+
+                    // update cell count variable
+                    if(current <= data["states"]){
+                        cell_count.innerHTML = current;
+                    }
+                    
+
                 }, 40);
             }
             
@@ -117,6 +131,63 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 })
 
+// Manhattan Heuristic Function, calculates the path cost L shape
+function heuristic(cell){
+    var position = cell.slice(1,cell.length-1).split(",")
+    let x = parseInt(position[0])
+    let y = parseInt(position[1])
+
+    cost = Math.abs((5 - x)) + Math.abs((20 - y))
+
+    return cost
+}
+
+// Method that writes the cost to finish line, gets the ID from Finish and does computations to start
+const colors = ["green", "red", "black"]
+function greedy_cost(){
+    document.querySelectorAll('td').forEach(function (td) {
+        if (td.style.backgroundColor == "") {
+            // Manhattan
+            console.log(td.style.backgroundColor)
+            var cost = heuristic(td.id)
+            td.innerHTML = cost
+        }
+    })
+}
+
+function clear_numbers() {
+    document.querySelectorAll('td').forEach(function (td) {
+        td.innerHTML = ""
+        
+        
+    })
+}
+
+// Clears out the previous run while keeping the current walls drawn by user
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('select').onchange = function() {
+        document.querySelectorAll('td').forEach(function (td) {
+            if (td.style.backgroundColor == "yellow" || td.style.backgroundColor == "orange")
+                td.style.backgroundColor = "";
+
+        });
+
+        if (this.value == "greedy" || this.value == "astar"){
+            greedy_cost()
+        }
+        else {
+            clear_numbers()
+        }
+    }
+});
+
+// Clear Button
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelector('#clear_button').onclick = function () {
+        window.location.reload()
+    }
+})
 
 // Set a start and finish cell
 document.addEventListener('DOMContentLoaded', function (){
@@ -195,3 +266,5 @@ function handleDragEnd(e) {
     drag = false
     this.style.opacity = '1';
 }
+
+

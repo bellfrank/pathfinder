@@ -2,10 +2,11 @@ import sys
 import pdb
 
 class Node():
-    def __init__(self, state, parent, action):
+    def __init__(self, state, parent, action, cost = 0):
         self.state = state
         self.parent = parent
         self.action = action
+        self.cost = 0
 
 
 class StackFrontier():
@@ -30,6 +31,8 @@ class StackFrontier():
             self.frontier = self.frontier[:-1]
             return node
 
+
+# Bread First Search Method
 # inherits from stack frontier but removes from the beginning of the list
 class QueueFrontier(StackFrontier):
 
@@ -42,11 +45,73 @@ class QueueFrontier(StackFrontier):
             return node
 
 
+class GreedyQueueFrontier(StackFrontier):
+
+    def heuristic(position):
+        x,y = position.state
+        print(x)
+        print(y)
+        cost = abs((5 - x)) + abs((20 - y))
+        return cost
+
+    def remove(self):
+        if self.empty():
+            raise Exception("empty frontier")
+        else:
+            # lets remove the node with the minimum heuristic value
+            costs = list(map(GreedyQueueFrontier.heuristic, self.frontier))
+            minimum = min(costs)
+            index = costs.index(minimum)
+            
+            # remove minimum node...
+            node = self.frontier[index]
+            self.frontier.pop(index)
+
+            return node
+
+
+class AStarSearch(StackFrontier):
+    '''
+    Search algorithm that expands node with lowest vallue of g(n) + h(n)
+
+    g(n) = cost to reach node
+    h(n) = estimated cost to goal(implemented in Greedy BFS)
+    '''
+
+    def heuristic(position):
+        x, y = position.state
+        cost = (abs((5 - x)) + abs((20 - y)) + position.cost)
+        
+        return cost
+
+    def remove(self):
+        if self.empty():
+            raise Exception("empty frontier")
+        else:
+
+            # convert our nodes to a list of estimated costs
+            costs = list(map(AStarSearch.heuristic, self.frontier))
+        
+            print(costs)
+
+            # find the index of the first occurence of minimum node cost
+            minimum = min(costs)
+            print(minimum)
+            index = costs.index(minimum)
+            
+
+            # proceed to minimum node cost, and remove that element
+            node = self.frontier[index]
+            self.frontier.pop(index)
+
+            return node
+
 class Maze():
 
     def __init__(self, blocks):
         # Keep track of order when traversing the matrix
         self.order = []
+        self.cost = 1
 
         # Determine height and width of maze
         self.height = 25
@@ -126,8 +191,9 @@ class Maze():
     def add(self, node):
         self.order.append(node)
 
-    def solve(self):
+    def solve(self, algo):
         """Finds a solution to maze, if one exists."""
+        print("ALGOOOOOO", algo)
 
         # Keep track of number of states explored
         self.num_explored = 0
@@ -135,7 +201,17 @@ class Maze():
         # Initialize frontier to just the starting position
         start = Node(state=self.start, parent=None, action=None)
         # Stack frontier is depth first search, queue is breadth first search
-        frontier = QueueFrontier()
+
+        if algo == "depth":
+            frontier = StackFrontier()
+        elif algo =="breadth":
+            frontier = QueueFrontier()
+        elif algo =="greedy":
+            frontier = GreedyQueueFrontier()
+        elif algo == "astar":
+            frontier = AStarSearch()
+
+
         frontier.add(start)
 
         # Initialize an empty explored set
@@ -172,10 +248,13 @@ class Maze():
             self.explored.add(node.state)
 
             # Add neighbors to frontier
+            
             for action, state in self.neighbors(node.state):
                 if not frontier.contains_state(state) and state not in self.explored:
                     child = Node(state=state, parent=node, action=action)
+                    child.cost = self.cost
                     frontier.add(child)
+            self.cost += 1
 
     def output_image(self, filename, show_solution=True, show_explored=False):
         from PIL import Image, ImageDraw

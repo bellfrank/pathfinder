@@ -13,6 +13,8 @@ from helpers import apology, login_required
 # maze.py
 from maze import Node, QueueFrontier, StackFrontier, Maze
 
+import time
+
 # Configure application
 app = Flask(__name__)
 
@@ -50,10 +52,18 @@ def index():
 @app.route("/search", methods=["POST"])
 def search():
     
-    walls = request.json
+    user_request = request.json
+    walls = user_request["walls"]
+    algo = user_request["algo"]
     m = Maze(walls)
-    m.solve()
+    
+    start = time.time()
+    m.solve(algo)
+    end = time.time()
+    elapsed = end-start
+   
   
+
     print("States Explored:", m.num_explored)
     print("Solution:")
     m.print()
@@ -61,7 +71,7 @@ def search():
 
     # Solution
     solution = m.solution[1] if m.solution is not None else None
-    return jsonify({"order": m.order, "solution": solution[:-1], "states":m.num_explored})
+    return jsonify({"order": m.order, "solution": solution[:-1], "states":m.num_explored, "time":elapsed})
 
 
 @app.route("/sell", methods=["GET", "POST"])
